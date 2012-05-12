@@ -18,6 +18,20 @@
 #define SPI_SLAVE_ACK_PIN 8
 #define RED_LED 5
 #define BLUE_LED 6
+#define YAW_SERVO_PIN 9
+#define PITCH_SERVO_PIN 6
+#define ROLL_SERVO_PIN 5
+#define THROTTLE_SERVO_PIN 3
+#define SPI_SLAVE_ACK_PIN 8
+#define SPI_SS_PIN 10
+
+// mechanical controls
+#define PITCH_CENTER_ANGLE 90  // approximate steering on-center angle for servo
+#define PITCH_MECHANICAL_MAX 25  // mechanical limits of servo travel
+#define YAW_CENTER_ANGLE 90  // approximate steering on-center angle for servo
+#define YAW_MECHANICAL_MAX 25  // mechanical limits of servo travel
+#define ROLL_CENTER_ANGLE 90  // approximate steering on-center angle for servo
+#define ROLL_MECHANICAL_MAX 25  // mechanical limits of servo travel
 
 // sensor configs
 #define GYRO_X_SIGN -1

@@ -1,5 +1,7 @@
+#include <Servo.h>
 #include "Structs.h"
 #include "Sensors.h"
+#include "Controller.h"
 
 // global data structs
 SensorData sensorData;
@@ -13,6 +15,7 @@ Sensors sensors;
 //Navigator navigator;
 //Pilot pilot;
 //Communication comms;
+Controller controller;
 
 void setup() {
   
@@ -35,7 +38,7 @@ void setup() {
   //navigator.init();
   sensors.init();
   //comms.init();
-  
+  controller.init();  
   // setup interrupts - must occur after sensor init
   //attachInterrupt(0, mpuDataInt, RISING);
 
@@ -56,4 +59,5 @@ void loop() {
   //navigator.update();  // update navigation calculations
   //pilot.update();      // update plane controls based on desired navigation
   //comms.sendData();    // send data to arduino mini
+  controller.update();
 }
