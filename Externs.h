@@ -9,5 +9,6 @@ extern NavData navData;
 extern PilotData pilotData;
 extern ErrorData errorData;
 extern DebugData debugData;
+extern CommData commData;
 
 #endif

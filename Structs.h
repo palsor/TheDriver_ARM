@@ -1,12 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-#define SENSOR_DATA 0
-#define NAV_DATA 1
-#define ERROR_DATA 2
-#define DEBUG_DATA 3
-#define PILOT_DATA 4
-#define CAPT_DATA 5
+#include "libmaple_types.h"
 
 struct Waypoint {  // W
   float latitude;  // lat:10
@@ -62,6 +57,12 @@ struct PilotData {
   float elevatorAngle;  // Elv itch value sent to controller (0-360 degrees)
   float rudderAngle;  // Rud yaw value sent to controller (0-360 degrees)
   float aileronAngle;  // Ail roll value sent to controller (0-360 degrees)
+};
+
+struct CommData {
+  int bufferLength;
+  uint8* bufferPointer;
+  bool dmaInProgress;
 };
 
 struct ErrorData {

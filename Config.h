@@ -8,9 +8,6 @@
 #define TEST_LINK_ERROR_THRESHOLD 0.01  // 1%
 
 // pins
-#define MPU_SS_PIN 4
-#define GPS_MUX_PIN 7
-#define MINI_SS_PIN 10
 #define AIRSPEED_PIN 3
 #define AIRSPEED_PIND A3
 #define BATTERY_PIN 1
@@ -22,8 +19,6 @@
 #define PITCH_SERVO_PIN 6
 #define ROLL_SERVO_PIN 5
 #define THROTTLE_SERVO_PIN 3
-#define SPI_SLAVE_ACK_PIN 8
-#define SPI_SS_PIN 10
 
 // mechanical controls
 #define PITCH_CENTER_ANGLE 90  // approximate steering on-center angle for servo
@@ -45,7 +40,9 @@
 #define MAG_Z_SIGN 1
 
 // output config
-#define SERIAL_RATE 38400 // baud
+#define GPS_SERIAL_RATE 38400 // baud
+#define RADIO_SERIAL_RATE 57600
+#define RADIO_SERIAL Serial3
 
 // debug config
 #define NAV_DEBUG 0
