@@ -107,7 +107,7 @@ bool Barometer::readRawValues(float* temp, float* pressure) {
 //
 unsigned short Barometer::read16(uint8 address) {
   uint8 buffer[2];
-  bus.i2cRead(BAROMETER_ADDRESS, address, 2, buffer);
+  bus.i2cReadBuffer(BAROMETER_ADDRESS, address, 2, buffer);
   return ((buffer[0] << 8) | buffer[1]);
 }
 

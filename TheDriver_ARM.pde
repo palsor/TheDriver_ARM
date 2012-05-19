@@ -18,32 +18,31 @@ CommData commData;
 
 // working objects
 Sensors sensors;
+Communication comms;
+Bus bus;
+Controller controller;
 //Captain captain;
 //Navigator navigator;
 //Pilot pilot;
-Communication comms;
-Controller controller;
-Bus bus;
+
 
 // sensor objects
 GPS gps;
+MPU mpu;
 Compass compass;
 Barometer barometer;
 SingleWire singleWire;
 
 void setup() {
-  //sensorData.airspeedRaw = 0;
-  
   // init our objects
   bus.init();
   //captain.init();
   //pilot.init();
   //navigator.init();
-  sensors.init(&gps, &compass, &barometer, &singleWire);
+  sensors.init(&gps, &mpu, &compass, &barometer, &singleWire);
   comms.init();
   controller.init();  
   // setup interrupts - must occur after sensor init
-  //attachInterrupt(0, mpuDataInt, RISING);
 
   // setup course waypoints
   //navigator.addWaypoint(30.359468,-97.904153); // Capella & Quinlan

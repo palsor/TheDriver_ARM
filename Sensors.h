@@ -8,6 +8,7 @@
 #include "Externs.h"
 #include "Constants.h"
 #include "GPS.h"
+#include "MPU.h"
 #include "Compass.h"
 #include "Barometer.h"
 #include "SingleWire.h"
@@ -15,7 +16,7 @@
 class Sensors {
   public:
     Sensors();
-    void init(GPS* gpsPointer, Compass* compassPointer, Barometer* barometerPointer, SingleWire* singleWirePointer);
+    void init(GPS* gpsPointer, MPU* mpuPointer, Compass* compassPointer, Barometer* barometerPointer, SingleWire* singleWirePointer);
     void update();
     //void mpuDataInt();
     
@@ -24,7 +25,7 @@ class Sensors {
      Compass* compass;
      Barometer* barometer;
      SingleWire* singleWire;
-     //MPU* mpu;
+     MPU* mpu;
      
      float rotation[3][3];
      unsigned long lastUpdateTime;

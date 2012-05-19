@@ -23,6 +23,10 @@ void Bus::init() {
 
   // initialize i2c
   Wire.begin(); // pins 20 and 21  
+  
+  // initialize SPI
+  spi = &HardwareSPI(2);
+  spi->begin(SPI_562_500KHZ, MSBFIRST, SPI_MODE_0);
 }
 
 //
@@ -48,7 +52,7 @@ void Bus::i2cWrite(uint8 i2cAddress, uint8 data) {
 //
 // i2cRead
 //
-bool Bus::i2cRead(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffer) {
+bool Bus::i2cReadBuffer(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffer) {
   bool returnValue = false;
   
   i2cWrite(i2cAddress, dataAddress);
@@ -65,8 +69,17 @@ bool Bus::i2cRead(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffe
 //
 // spiRead
 //
-void Bus::spiRead(uint8 count, uint8* buffer) {
-  
+uint8 Bus::spiRead(uint8 dataAddress) {
+  spi->transfer(dataAddress | 0x80);
+  return spi->transfer(0);
+}
+
+//
+// spiWrite
+//
+void Bus::spiWrite(uint8 dataAddress, uint8 data) {
+  spi->transfer(dataAddress);
+  spi->transfer(data);
 }
 
 //

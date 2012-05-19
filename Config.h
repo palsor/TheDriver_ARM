@@ -33,7 +33,7 @@
 #define MAG_Y_SIGN -1
 #define MAG_Z_SIGN 1
 
-// output config
+// serial port config
 #define GPS_SERIAL_PORT 1
 #define GPS_SERIAL_RATE 38400
 #define RADIO_SERIAL_PORT 3

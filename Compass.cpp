@@ -23,7 +23,7 @@ bool Compass::readRawValues(float* mag) {
   // read the compass values
   uint8 buffer[6];
   
-  if (bus.i2cRead(COMPASS_ADDRESS, DATA_ADDRESS, 6, buffer))
+  if (bus.i2cReadBuffer(COMPASS_ADDRESS, DATA_ADDRESS, 6, buffer))
     returnValue = true;
 
   // MSB byte first, then LSB, X,Y,Z

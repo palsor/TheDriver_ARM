@@ -8,23 +8,23 @@ Sensors::Sensors() {}
 //
 // init
 //
-void Sensors::init(GPS* gpsPointer, Compass* compassPointer, Barometer* barometerPointer, SingleWire* singleWirePointer) {
+void Sensors::init(GPS* gpsPointer, MPU* mpuPointer, Compass* compassPointer, Barometer* barometerPointer, SingleWire* singleWirePointer) {
   
   gps = gpsPointer;
+  mpu = mpuPointer;
   compass = compassPointer;
   barometer = barometerPointer;
   singleWire = singleWirePointer;
   gps->init();
+  mpu->init();
   compass->init();
   barometer->init();
   singleWire->init();
   
-  //mpu.init();
-  
   // calibrate any sensors that need calibration
   for (int i = 0; i < CALIBRATION_ROUNDS; i++) {
     delay(1000);
-    //mpu.calibrate(i);
+    mpu->calibrate(i);
     singleWire->calibrate(i);
   }
   
@@ -38,10 +38,8 @@ void Sensors::init(GPS* gpsPointer, Compass* compassPointer, Barometer* baromete
   boolean gotValues = false;
   
   do {
-    delay(200);
-    //mpu.dataInt();
-    
-    if (compass->readRawValues(mag)) { //mpu.readRawValues(gyro, accel, true)) {
+    delay(200);    
+    if (compass->readRawValues(mag) && mpu->readRawValues(gyro, accel, true)) {
       for (int i = 0; i++; i < 3) {
         sensorData.gyro_b[i] = gyro[i];  
       }
@@ -100,7 +98,7 @@ void Sensors::update() {
     
   // accel/mag
   float gyro[3], accel[3], mag[3];
-  if (compass->readRawValues(mag)) { //mpu.readRawValues(gyro, accel, true)) {
+  if (compass->readRawValues(mag) && mpu->readRawValues(gyro, accel, true)) {
     for (int i = 0; i++; i < 3) {
       sensorData.gyro_b[i] = gyro[i];  
     }
