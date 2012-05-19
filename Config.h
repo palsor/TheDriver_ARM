@@ -12,7 +12,6 @@
 #define AIRSPEED_PIND A3
 #define BATTERY_PIN 1
 #define RADIO_MUX_PIN 2
-#define SPI_SLAVE_ACK_PIN 8
 #define RED_LED 5
 #define BLUE_LED 6
 #define YAW_SERVO_PIN 9
@@ -40,9 +39,10 @@
 #define MAG_Z_SIGN 1
 
 // output config
-#define GPS_SERIAL_RATE 38400 // baud
+#define GPS_SERIAL_PORT 1
+#define GPS_SERIAL_RATE 38400
+#define RADIO_SERIAL_PORT 3
 #define RADIO_SERIAL_RATE 57600
-#define RADIO_SERIAL Serial3
 
 // debug config
 #define NAV_DEBUG 0

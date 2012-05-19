@@ -1,30 +1,25 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-//#include <Arduino.h>
-#include <math.h>
-#include <wirish_time.h>
+#include "math.h"
+#include "wirish_time.h"
 
 #include "Config.h"
 #include "Externs.h"
 #include "Constants.h"
-
-//#include "Compass.h"
-//#include "MPU6000.h"
-//#include "GPS.h"
-//#include "Barometer.h"
-//#include "SingleWire.h"
+#include "GPS.h"
+#include "Compass.h"
 
 class Sensors {
   public:
     Sensors();
-    void init();
+    void init(GPS* gpsPointer, Compass* compassPointer);
     void update();
     //void mpuDataInt();
     
    private:
-     //Compass compass;
-     //GPS gps;
+     GPS* gps;
+     Compass* compass;
      //MPU6000 mpu;
      //Barometer barometer;
      //SingleWire singleWire;

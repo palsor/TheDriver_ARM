@@ -1,10 +1,14 @@
 #include "Servo.h"
+#include "HardwareSerial.h"
+#include "Wire.h"
 #include "dma.h"
 
 #include "Structs.h"
 #include "Sensors.h"
 #include "Controller.h"
 #include "Communication.h"
+#include "Bus.h"
+#include "GPS.h"
 
 // global data structs
 SensorData sensorData;
@@ -20,20 +24,21 @@ Sensors sensors;
 //Pilot pilot;
 Communication comms;
 Controller controller;
+Bus bus;
+
+// sensor objects
+GPS gps;
+Compass compass;
 
 void setup() {
-  // init SPI bus - must come before sensor and comms init
-  //SPI.begin();
-  //SPI.setClockDivider(SPI_CLOCK_DIV16);      // SPI at 1Mhz (on 16Mhz clock)
-  //delay(10);
-  
   //sensorData.airspeedRaw = 0;
   
   // init our objects
+  bus.init();
   //captain.init();
   //pilot.init();
   //navigator.init();
-  sensors.init();
+  sensors.init(&gps, &compass);
   comms.init();
   controller.init();  
   // setup interrupts - must occur after sensor init
@@ -48,9 +53,7 @@ void setup() {
 
   //navigator.beginNavigation();
   
-  // setup the serial port to the radio and the DMA controller
-  RADIO_SERIAL.begin(RADIO_SERIAL_RATE);
-  USART3->regs->CR3 = USART_CR3_DMAT;
+  // setup the DMA controller
   dma_init(DMA1); // void dma_init(dma_dev * dev)
 } 
 

@@ -2,11 +2,14 @@
 
 Sensors::Sensors() {} //: gps(), compass(), mpu(), barometer(), singleWire() {}
 
-void Sensors::init() {
+void Sensors::init(GPS* gpsPointer, Compass* compassPointer) {
   
-  /*gps.init();
-  compass.init();
-  mpu.init();
+  gps = gpsPointer;
+  compass = compassPointer;
+  gps->init();
+  compass->init();
+
+  /*mpu.init();
   barometer.init();
   singleWire.init();
   
@@ -16,6 +19,7 @@ void Sensors::init() {
     mpu.calibrate(i);
     singleWire.calibrate(i);
   }
+  */
   
   // init variables
   lastUpdateTime = micros();
@@ -28,9 +32,10 @@ void Sensors::init() {
   
   do {
     delay(200);
-    mpu.dataInt();
+    //mpu.dataInt();
     
-    if (mpu.readRawValues(gyro, accel, true) && compass.readRawValues(mag)) {
+    if (true) { //mpu.readRawValues(gyro, accel, true)) {
+      compass->readRawValues(mag);
       
       for (int i = 0; i++; i < 3) {
         sensorData.gyro_b[i] = gyro[i];  
@@ -71,19 +76,17 @@ void Sensors::init() {
       gotValues = true;
     }  
   } while (gotValues == false);
-  
-  */
 }
 
 //
 // update - gets latest data from sensors if it is time to read them again
 //
 void Sensors::update() {
-  /*
   
   // gps
-  gps.update();
+  gps->update();
   
+  /*
   // barometer
   float temp, pressure;
   if (barometer.readRawValues(&temp, &pressure)) {
@@ -95,9 +98,12 @@ void Sensors::update() {
   // battery
   sensorData.battVoltage = singleWire.readBattery();
     
+  */  
+    
   // accel/mag
   float gyro[3], accel[3], mag[3];
-  if (mpu.readRawValues(gyro, accel, true) && compass.readRawValues(mag)) {
+  if (true) { //mpu.readRawValues(gyro, accel, true)) {
+    compass->readRawValues(mag);
     for (int i = 0; i++; i < 3) {
       sensorData.gyro_b[i] = gyro[i];  
     }
@@ -106,6 +112,7 @@ void Sensors::update() {
     eulerAngles();
   }
 
+/*
   // airspeed
   float airspeedBody[3] = {singleWire.readAirspeed(), 0, 0};
   sensorData.airspeedRaw = airspeedBody[0];
