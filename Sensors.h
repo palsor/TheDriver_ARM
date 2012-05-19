@@ -9,19 +9,20 @@
 #include "Constants.h"
 #include "GPS.h"
 #include "Compass.h"
+#include "Barometer.h"
 
 class Sensors {
   public:
     Sensors();
-    void init(GPS* gpsPointer, Compass* compassPointer);
+    void init(GPS* gpsPointer, Compass* compassPointer, Barometer* barometerPointer);
     void update();
     //void mpuDataInt();
     
    private:
      GPS* gps;
      Compass* compass;
+     Barometer* barometer;
      //MPU6000 mpu;
-     //Barometer barometer;
      //SingleWire singleWire;
      
      float rotation[3][3];

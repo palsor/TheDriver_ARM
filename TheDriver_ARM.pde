@@ -8,7 +8,6 @@
 #include "Controller.h"
 #include "Communication.h"
 #include "Bus.h"
-#include "GPS.h"
 
 // global data structs
 SensorData sensorData;
@@ -29,6 +28,7 @@ Bus bus;
 // sensor objects
 GPS gps;
 Compass compass;
+Barometer barometer;
 
 void setup() {
   //sensorData.airspeedRaw = 0;
@@ -38,7 +38,7 @@ void setup() {
   //captain.init();
   //pilot.init();
   //navigator.init();
-  sensors.init(&gps, &compass);
+  sensors.init(&gps, &compass, &barometer);
   comms.init();
   controller.init();  
   // setup interrupts - must occur after sensor init

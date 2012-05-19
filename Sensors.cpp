@@ -2,15 +2,16 @@
 
 Sensors::Sensors() {} //: gps(), compass(), mpu(), barometer(), singleWire() {}
 
-void Sensors::init(GPS* gpsPointer, Compass* compassPointer) {
+void Sensors::init(GPS* gpsPointer, Compass* compassPointer, Barometer* barometerPointer) {
   
   gps = gpsPointer;
   compass = compassPointer;
+  barometer = barometerPointer;
   gps->init();
   compass->init();
+  barometer->init();
 
   /*mpu.init();
-  barometer.init();
   singleWire.init();
   
   // calibrate any sensors that need calibration
@@ -83,20 +84,16 @@ void Sensors::update() {
   
   // gps
   gps->update();
-  
-  /*
+
   // barometer
   float temp, pressure;
-  if (barometer.readRawValues(&temp, &pressure)) {
+  if (barometer->readRawValues(&temp, &pressure)) {
     // calculate altitude
     sensorData.pressAltitude = 44330 * (1.0 - pow(pressure / PRESSURE_SEA_LEVEL, 0.1903));
- 
   }
   
   // battery
-  sensorData.battVoltage = singleWire.readBattery();
-    
-  */  
+  //sensorData.battVoltage = singleWire.readBattery();
     
   // accel/mag
   float gyro[3], accel[3], mag[3];
