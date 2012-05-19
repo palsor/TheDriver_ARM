@@ -22,7 +22,7 @@ class Compass {
   public:
     Compass();
     void init();
-    void readRawValues(float* mag);
+    bool readRawValues(float* mag);
 };
 
 #endif

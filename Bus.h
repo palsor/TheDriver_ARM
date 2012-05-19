@@ -13,7 +13,7 @@ class Bus {
     void init();
     void i2cWriteBuffer(uint8 i2cAddress, uint8 count, uint8* buffer);
     void i2cWrite(uint8 i2cAddress, uint8 data);
-    void i2cRead(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffer);
+    bool i2cRead(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffer);
     void spiRead(uint8 count, uint8* buffer);
     
     unsigned int serialAvailable(uint8 bus);

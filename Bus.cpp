@@ -48,13 +48,18 @@ void Bus::i2cWrite(uint8 i2cAddress, uint8 data) {
 //
 // i2cRead
 //
-void Bus::i2cRead(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffer) {
+bool Bus::i2cRead(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffer) {
+  bool returnValue = false;
+  
   i2cWrite(i2cAddress, dataAddress);
   Wire.requestFrom(i2cAddress, count);    // request 6 bytes from device
   for (int i = 0; (i < count) && (Wire.available()); i++) {
     buffer[i] = Wire.receive();  
   }
-  Wire.endTransmission();  
+  if (Wire.endTransmission() == SUCCESS)
+    returnValue = true;
+
+  return returnValue;
 }
 
 //

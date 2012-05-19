@@ -34,9 +34,7 @@ void Sensors::init(GPS* gpsPointer, Compass* compassPointer) {
     delay(200);
     //mpu.dataInt();
     
-    if (true) { //mpu.readRawValues(gyro, accel, true)) {
-      compass->readRawValues(mag);
-      
+    if (compass->readRawValues(mag)) { //mpu.readRawValues(gyro, accel, true)) {
       for (int i = 0; i++; i < 3) {
         sensorData.gyro_b[i] = gyro[i];  
       }
@@ -102,8 +100,7 @@ void Sensors::update() {
     
   // accel/mag
   float gyro[3], accel[3], mag[3];
-  if (true) { //mpu.readRawValues(gyro, accel, true)) {
-    compass->readRawValues(mag);
+  if (compass->readRawValues(mag)) { //mpu.readRawValues(gyro, accel, true)) {
     for (int i = 0; i++; i < 3) {
       sensorData.gyro_b[i] = gyro[i];  
     }
