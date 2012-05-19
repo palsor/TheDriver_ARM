@@ -1,26 +1,32 @@
 #include "Sensors.h"
 
-Sensors::Sensors() {} //: gps(), compass(), mpu(), barometer(), singleWire() {}
+//
+// constructor
+//
+Sensors::Sensors() {}
 
-void Sensors::init(GPS* gpsPointer, Compass* compassPointer, Barometer* barometerPointer) {
+//
+// init
+//
+void Sensors::init(GPS* gpsPointer, Compass* compassPointer, Barometer* barometerPointer, SingleWire* singleWirePointer) {
   
   gps = gpsPointer;
   compass = compassPointer;
   barometer = barometerPointer;
+  singleWire = singleWirePointer;
   gps->init();
   compass->init();
   barometer->init();
-
-  /*mpu.init();
-  singleWire.init();
+  singleWire->init();
+  
+  //mpu.init();
   
   // calibrate any sensors that need calibration
   for (int i = 0; i < CALIBRATION_ROUNDS; i++) {
     delay(1000);
-    mpu.calibrate(i);
-    singleWire.calibrate(i);
+    //mpu.calibrate(i);
+    singleWire->calibrate(i);
   }
-  */
   
   // init variables
   lastUpdateTime = micros();
@@ -91,9 +97,6 @@ void Sensors::update() {
     // calculate altitude
     sensorData.pressAltitude = 44330 * (1.0 - pow(pressure / PRESSURE_SEA_LEVEL, 0.1903));
   }
-  
-  // battery
-  //sensorData.battVoltage = singleWire.readBattery();
     
   // accel/mag
   float gyro[3], accel[3], mag[3];
@@ -106,13 +109,10 @@ void Sensors::update() {
     eulerAngles();
   }
 
-/*
   // airspeed
-  float airspeedBody[3] = {singleWire.readAirspeed(), 0, 0};
+  float airspeedBody[3] = {singleWire->readAirspeed(), 0, 0};
   sensorData.airspeedRaw = airspeedBody[0];
   matrixRotate(airspeedBody, sensorData.airspeed_e); 
-  
-  */
 }
 
 //

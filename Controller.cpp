@@ -5,7 +5,6 @@
 //
 Controller::Controller() {}
 
-
 //
 // creates hardware control objects and initializes to safe values
 //

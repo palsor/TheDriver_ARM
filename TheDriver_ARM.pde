@@ -29,6 +29,7 @@ Bus bus;
 GPS gps;
 Compass compass;
 Barometer barometer;
+SingleWire singleWire;
 
 void setup() {
   //sensorData.airspeedRaw = 0;
@@ -38,7 +39,7 @@ void setup() {
   //captain.init();
   //pilot.init();
   //navigator.init();
-  sensors.init(&gps, &compass, &barometer);
+  sensors.init(&gps, &compass, &barometer, &singleWire);
   comms.init();
   controller.init();  
   // setup interrupts - must occur after sensor init

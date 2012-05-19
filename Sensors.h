@@ -10,11 +10,12 @@
 #include "GPS.h"
 #include "Compass.h"
 #include "Barometer.h"
+#include "SingleWire.h"
 
 class Sensors {
   public:
     Sensors();
-    void init(GPS* gpsPointer, Compass* compassPointer, Barometer* barometerPointer);
+    void init(GPS* gpsPointer, Compass* compassPointer, Barometer* barometerPointer, SingleWire* singleWirePointer);
     void update();
     //void mpuDataInt();
     
@@ -22,8 +23,8 @@ class Sensors {
      GPS* gps;
      Compass* compass;
      Barometer* barometer;
-     //MPU6000 mpu;
-     //SingleWire singleWire;
+     SingleWire* singleWire;
+     //MPU* mpu;
      
      float rotation[3][3];
      unsigned long lastUpdateTime;

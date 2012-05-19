@@ -8,12 +8,7 @@
 #define TEST_LINK_ERROR_THRESHOLD 0.01  // 1%
 
 // pins
-#define AIRSPEED_PIN 3
-#define AIRSPEED_PIND A3
-#define BATTERY_PIN 1
-#define RADIO_MUX_PIN 2
-#define RED_LED 5
-#define BLUE_LED 6
+#define AIRSPEED_PIN 6
 #define YAW_SERVO_PIN 9
 #define PITCH_SERVO_PIN 6
 #define ROLL_SERVO_PIN 5
@@ -54,12 +49,10 @@
 // sensor controls
 #define CALIBRATION_ROUNDS 5
 #define MAG_DECLINATION -6
-#define VREF50 5.0f
-#define VREF33 3.3f
 
 // analog settings
-#define VREF 5.0
-#define MAX_ADC_RANGE 1024
+#define VREF 3.3
+#define MAX_ADC_RANGE 4095
 
 // DCM controls
 #define GYRO_WEIGHT 0.5
