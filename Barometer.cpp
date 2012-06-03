@@ -26,7 +26,7 @@ void Barometer::init() {
   _MD = read16(REG_EEPROM_BEGIN + 20);
   
   // kick off a measurement
-  write8(REG_CTRL, CMD_START_TEMP);
+  bus.i2cWrite(BAROMETER_ADDRESS, REG_CTRL, CMD_START_TEMP);
   lastTime = millis();
 }
 
@@ -46,7 +46,7 @@ bool Barometer::readRawValues(float* temp, float* pressure) {
       // new value is temp, read, kick off new pressure measurement, and update state
       UT = read16(REG_DATA);
       
-      write8(REG_CTRL, CMD_START_PRESSURE);
+      bus.i2cWrite(BAROMETER_ADDRESS, REG_CTRL, CMD_START_PRESSURE);
       lastTime = millis();
       state++;
     
@@ -90,7 +90,7 @@ bool Barometer::readRawValues(float* temp, float* pressure) {
       *pressure = (float)p / 1000.0;
       
       // kick off a new temp read
-      write8(REG_CTRL, CMD_START_TEMP);
+      bus.i2cWrite(BAROMETER_ADDRESS, REG_CTRL, CMD_START_TEMP);
       lastTime = millis();
       
       // update state machine and return value
@@ -107,16 +107,8 @@ bool Barometer::readRawValues(float* temp, float* pressure) {
 //
 unsigned short Barometer::read16(uint8 address) {
   uint8 buffer[2];
-  bus.i2cReadBuffer(BAROMETER_ADDRESS, address, 2, buffer);
+  bus.i2cRead(BAROMETER_ADDRESS, address, 2, buffer);
   return ((buffer[0] << 8) | buffer[1]);
-}
-
-//
-// write - writes 8 bits to the barometer
-//
-void Barometer::write8(uint8 address, uint8 data) {
-  uint8 buffer[2] = {address, data};
-  bus.i2cWriteBuffer(BAROMETER_ADDRESS, 2, buffer);
 }
 
 

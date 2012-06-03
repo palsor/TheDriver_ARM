@@ -10,8 +10,7 @@ Compass::Compass() {}
 //
 void Compass::init() { 
   // Set the compass to continuous mode
-  uint8 buffer[2] = {MODE_REGISTER, CONTINUOUS_MODE};
-  bus.i2cWriteBuffer(COMPASS_ADDRESS, 2, buffer); 
+  bus.i2cWrite(COMPASS_ADDRESS, MODE_REGISTER, CONTINUOUS_MODE); 
 }
 
 //
@@ -23,7 +22,7 @@ bool Compass::readRawValues(float* mag) {
   // read the compass values
   uint8 buffer[6];
   
-  if (bus.i2cReadBuffer(COMPASS_ADDRESS, DATA_ADDRESS, 6, buffer))
+  if (bus.i2cRead(COMPASS_ADDRESS, DATA_REGISTER, 6, buffer))
     returnValue = true;
 
   // MSB byte first, then LSB, X,Y,Z

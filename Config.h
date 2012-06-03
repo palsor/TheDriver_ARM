@@ -40,6 +40,7 @@
 #define RADIO_SERIAL_RATE 57600
 #define SPI_PORT 2
 #define I2C_PORT 1
+#define I2C_MODE I2C_FAST_MODE
 
 // debug config
 #define NAV_DEBUG 0

@@ -31,7 +31,6 @@ class Barometer {
     unsigned long lastTime;
     
     unsigned short read16(uint8 address);
-    void write8(uint8 address, uint8 data);
 };
 
 #endif

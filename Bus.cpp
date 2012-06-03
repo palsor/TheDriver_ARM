@@ -8,7 +8,7 @@ Bus::Bus() {}
 //
 // init 
 //
-void Bus::init(HardwareSPI* spiPointer) {
+void Bus::init(HardWire* i2cPointer, HardwareSPI* spiPointer) {
   // initialize serial ports
   serialPorts[0] = &Serial1;
   serialPorts[1] = &Serial2;
@@ -22,7 +22,8 @@ void Bus::init(HardwareSPI* spiPointer) {
   serialPorts[RADIO_SERIAL_PORT-1]->flush();
 
   // initialize i2c
-  Wire.begin(); // pins 20 and 21  
+  i2c = i2cPointer;
+  i2c->begin();  
   
   // initialize SPI
   spi = spiPointer;
@@ -30,37 +31,29 @@ void Bus::init(HardwareSPI* spiPointer) {
 }
 
 //
-// i2cWriteBuffer
-//
-void Bus::i2cWriteBuffer(uint8 i2cAddress, uint8 count, uint8* buffer) {
-  Wire.beginTransmission(i2cAddress);
-  for (uint8 i = 0; i < count; i++) {
-    Wire.send(*(buffer + i)); 
-  }
-  Wire.endTransmission(); 
-}
-
-//
 // i2cWrite
 //
-void Bus::i2cWrite(uint8 i2cAddress, uint8 data) {
-  Wire.beginTransmission(i2cAddress);
-  Wire.send(data); 
-  Wire.endTransmission();  
+void Bus::i2cWrite(uint8 i2cAddress, uint8 regAddress, uint8 data) {
+  i2c->beginTransmission(i2cAddress);
+  i2c->send(regAddress);
+  i2c->send(data); 
+  i2c->endTransmission();  
 }
 
 //
 // i2cRead
 //
-bool Bus::i2cReadBuffer(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffer) {
+bool Bus::i2cRead(uint8 i2cAddress, uint8 regAddress, uint8 count, uint8* buffer) {
   bool returnValue = false;
   
-  i2cWrite(i2cAddress, dataAddress);
-  Wire.requestFrom(i2cAddress, count);    // request 6 bytes from device
-  for (int i = 0; (i < count) && (Wire.available()); i++) {
-    buffer[i] = Wire.receive();  
+  i2c->beginTransmission(i2cAddress);
+  i2c->send(regAddress);
+  i2c->endTransmission();
+  i2c->requestFrom(i2cAddress, count);    // request 6 bytes from device
+  for (int i = 0; (i < count) && (i2c->available()); i++) {
+    buffer[i] = i2c->receive();  
   }
-  if (Wire.endTransmission() == SUCCESS)
+  if (i2c->endTransmission() == SUCCESS)
     returnValue = true;
 
   return returnValue;

@@ -1,7 +1,7 @@
 #include "Servo.h"
 #include "HardwareSerial.h"
 #include "HardwareSPI.h"
-#include "Wire.h"
+#include "HardWire.h"
 #include "dma.h"
 
 #include "Structs.h"
@@ -35,10 +35,11 @@ SingleWire singleWire;
 
 // global bus objects
 HardwareSPI spi(SPI_PORT);
+HardWire i2c(I2C_PORT, I2C_MODE);
 
 void setup() {
   // init our objects
-  bus.init(&spi);
+  bus.init(&i2c, &spi);
   //captain.init();
   //pilot.init();
   //navigator.init();
