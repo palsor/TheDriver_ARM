@@ -8,7 +8,7 @@ Bus::Bus() {}
 //
 // init 
 //
-void Bus::init() {
+void Bus::init(HardwareSPI* spiPointer) {
   // initialize serial ports
   serialPorts[0] = &Serial1;
   serialPorts[1] = &Serial2;
@@ -25,7 +25,7 @@ void Bus::init() {
   Wire.begin(); // pins 20 and 21  
   
   // initialize SPI
-  spi = &HardwareSPI(2);
+  spi = spiPointer;
   spi->begin(SPI_562_500KHZ, MSBFIRST, SPI_MODE_0);
 }
 

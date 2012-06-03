@@ -1,5 +1,6 @@
 #include "Servo.h"
 #include "HardwareSerial.h"
+#include "HardwareSPI.h"
 #include "Wire.h"
 #include "dma.h"
 
@@ -25,17 +26,19 @@ Controller controller;
 //Navigator navigator;
 //Pilot pilot;
 
-
-// sensor objects
+// global sensor objects
 GPS gps;
 MPU mpu;
 Compass compass;
 Barometer barometer;
 SingleWire singleWire;
 
+// global bus objects
+HardwareSPI spi(SPI_PORT);
+
 void setup() {
   // init our objects
-  bus.init();
+  bus.init(&spi);
   //captain.init();
   //pilot.init();
   //navigator.init();

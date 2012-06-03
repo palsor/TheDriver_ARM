@@ -11,7 +11,7 @@
 class Bus {
   public:
     Bus();
-    void init();
+    void init(HardwareSPI* spiPointer);
     void i2cWriteBuffer(uint8 i2cAddress, uint8 count, uint8* buffer);
     void i2cWrite(uint8 i2cAddress, uint8 data);
     bool i2cReadBuffer(uint8 i2cAddress, uint8 dataAddress, uint8 count, uint8* buffer);
