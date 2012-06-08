@@ -8,23 +8,27 @@ Sensors::Sensors() {}
 //
 // init
 //
-void Sensors::init(GPS* gpsPointer, MPU* mpuPointer, Compass* compassPointer, Barometer* barometerPointer, SingleWire* singleWirePointer) {
+void Sensors::init(GPS* gpsPointer, Mag *magPointer, Accel* accelPointer, Gyro* gyroPointer, Barometer* barometerPointer, SingleWire* singleWirePointer) {
   
   gps = gpsPointer;
-  mpu = mpuPointer;
-  compass = compassPointer;
+  mag = magPointer;
+  accel = accelPointer;
+  gyro = gyroPointer;
   barometer = barometerPointer;
   singleWire = singleWirePointer;
   gps->init();
-  mpu->init();
-  compass->init();
+  mag->init();
+  accel->init();
+  gyro->init();
   barometer->init();
   singleWire->init();
   
   // calibrate any sensors that need calibration
   for (int i = 0; i < CALIBRATION_ROUNDS; i++) {
     delay(1000);
-    mpu->calibrate(i);
+    mag->calibrate(i);
+    accel->calibrate(i);
+    gyro->calibrate(i);
     singleWire->calibrate(i);
   }
   
@@ -32,49 +36,49 @@ void Sensors::init(GPS* gpsPointer, MPU* mpuPointer, Compass* compassPointer, Ba
   lastUpdateTime = micros();
   
   // generate initial rotation matrix
-  float gyro[3];
-  float accel[3];
-  float mag[3];
+  float gyroValues[3];
+  float accelValues[3];
+  float magValues[3];
   boolean gotValues = false;
   
   do {
     delay(200);    
-    if (compass->readRawValues(mag) && mpu->readRawValues(gyro, accel, true)) {
+    if (mag->readRawValues(magValues) && accel->readRawValues(accelValues) && gyro->readRawValues(gyroValues)) {
       for (int i = 0; i++; i < 3) {
-        sensorData.gyro_b[i] = gyro[i];  
+        sensorData.gyro_b[i] = gyroValues[i];  
       }
       
       // convert accels and mag to unit vectors
-      matrixUnit(accel);
-      matrixUnit(mag);
+      matrixUnit(accelValues);
+      matrixUnit(magValues);
       
       // we want the positive K vector, so invert gravity
-      accel[0] = -accel[0];
-      accel[1] = -accel[1];
-      accel[2] = -accel[2];
+      accelValues[0] = -accelValues[0];
+      accelValues[1] = -accelValues[1];
+      accelValues[2] = -accelValues[2];
       
       // adjust mag to account for downward component of earth's magnetic field
-      float scalar = matrixDot(mag, accel);
+      float scalar = matrixDot(magValues, accelValues);
       for (int i = 0; i < 3; i++) {
-        mag[i] -= scalar * accel[i];  
+        magValues[i] -= scalar * accelValues[i];  
       }
-      matrixUnit(mag);
+      matrixUnit(magValues);
       
       // calculate K x I = J
       float j[3];
-      matrixCross(accel, mag, j);
+      matrixCross(accelValues, magValues, j);
       
-      rotation[0][0] = mag[0];
-      rotation[0][1] = mag[1];
-      rotation[0][2] = mag[2];
+      rotation[0][0] = magValues[0];
+      rotation[0][1] = magValues[1];
+      rotation[0][2] = magValues[2];
       
       rotation[1][0] = j[0];
       rotation[1][1] = j[1];
       rotation[1][2] = j[2];
       
-      rotation[2][0] = accel[0];
-      rotation[2][1] = accel[1];
-      rotation[2][2] = accel[2];
+      rotation[2][0] = accelValues[0];
+      rotation[2][1] = accelValues[1];
+      rotation[2][2] = accelValues[2];
     
       gotValues = true;
     }  
@@ -96,14 +100,14 @@ void Sensors::update() {
     sensorData.pressAltitude = 44330 * (1.0 - pow(pressure / PRESSURE_SEA_LEVEL, 0.1903));
   }
     
-  // accel/mag
-  float gyro[3], accel[3], mag[3];
-  if (compass->readRawValues(mag) && mpu->readRawValues(gyro, accel, true)) {
+  // mag/accel/gyro
+  float gyroValues[3], accelValues[3], magValues[3];
+  if (mag->readRawValues(magValues) && accel->readRawValues(accelValues) && gyro->readRawValues(gyroValues)) {
     for (int i = 0; i++; i < 3) {
-      sensorData.gyro_b[i] = gyro[i];  
+      sensorData.gyro_b[i] = gyroValues[i];  
     }
     
-    updateRotationMatrix(gyro, accel, mag);
+    updateRotationMatrix(gyroValues, accelValues, magValues);
     eulerAngles();
   }
 
@@ -116,7 +120,7 @@ void Sensors::update() {
 //
 // updateRotationMatrix - read the accel/mag/gyro, calculate the change in the angle, and update the rotation matrix
 //
-void Sensors::updateRotationMatrix(float* gyro, float* accel, float* mag) {
+void Sensors::updateRotationMatrix(float* gyroValues, float* accelValues, float* magValues) {
       
   //
   // calculate angular change from gyros
@@ -129,7 +133,7 @@ void Sensors::updateRotationMatrix(float* gyro, float* accel, float* mag) {
       
   // calculate angular change from gyro values
   for (int i = 0; i < 3; i++) {
-    gyro[i] *= timeDelta / 1000000.0f * DEG2RAD; 
+    gyroValues[i] *= timeDelta / 1000000.0f * DEG2RAD; 
   } 
     
   //
@@ -137,38 +141,38 @@ void Sensors::updateRotationMatrix(float* gyro, float* accel, float* mag) {
   //
     
   // convert mag and accel to unit vectors
-  matrixUnit(mag); 
-  matrixUnit(accel); 
+  matrixUnit(magValues); 
+  matrixUnit(accelValues); 
     
   // invert accel so gravity is correctly pointing down
   for (int i = 0; i < 3; i++) {
-    accel[i] = -1.0f * accel[i];
+    accelValues[i] = -1.0f * accelValues[i];
   }
   
   // adjust mag to account for downward component of earth's magnetic field
-  float scalar = matrixDot(mag, accel);
+  float scalar = matrixDot(magValues, accelValues);
   for (int i = 0; i < 3; i++) {
-    mag[i] -= scalar * accel[i];  
+    magValues[i] -= scalar * accelValues[i];  
   }
-  matrixUnit(mag);
+  matrixUnit(magValues);
     
   // calculate angular change from mag and accel
   for (int i = 0; i < 3; i++) {
-    mag[i] = mag[i] - rotation[0][i];       
-    accel[i] = accel[i] - rotation[2][i];
+    magValues[i] = magValues[i] - rotation[0][i];       
+    accelValues[i] = accelValues[i] - rotation[2][i];
   }
       
   float magAngle[3];
-  matrixCross(rotation[0], mag, magAngle);
+  matrixCross(rotation[0], magValues, magAngle);
   float accelAngle[3];
-  matrixCross(rotation[2], accel, accelAngle);
+  matrixCross(rotation[2], accelValues, accelAngle);
     
   //
   // weight gyros, mag, and accel to calculate final answer
   //
   float finalAngle[3];
   for (int i = 0; i < 3; i++) {
-    finalAngle[i] = gyro[i] * GYRO_WEIGHT + magAngle[i] * MAG_WEIGHT + accelAngle[i] * ACCEL_WEIGHT;  
+    finalAngle[i] = gyroValues[i] * GYRO_WEIGHT + magAngle[i] * MAG_WEIGHT + accelAngle[i] * ACCEL_WEIGHT;  
   }
      
   //

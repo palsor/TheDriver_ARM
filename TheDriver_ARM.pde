@@ -28,22 +28,22 @@ Controller controller;
 
 // global sensor objects
 GPS gps;
-MPU mpu;
-Compass compass;
+Gyro gyro;
+Mag mag;
+Accel accel;
 Barometer barometer;
 SingleWire singleWire;
 
 // global bus objects
-HardwareSPI spi(SPI_PORT);
 HardWire i2c(I2C_PORT, I2C_MODE);
 
 void setup() {
   // init our objects
-  bus.init(&i2c, &spi);
+  bus.init(&i2c);
   //captain.init();
   //pilot.init();
   //navigator.init();
-  sensors.init(&gps, &mpu, &compass, &barometer, &singleWire);
+  sensors.init(&gps, &mag, &accel, &gyro, &barometer, &singleWire);
   comms.init();
   controller.init();  
   // setup interrupts - must occur after sensor init

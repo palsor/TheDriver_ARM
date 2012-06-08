@@ -8,7 +8,7 @@ Bus::Bus() {}
 //
 // init 
 //
-void Bus::init(HardWire* i2cPointer, HardwareSPI* spiPointer) {
+void Bus::init(HardWire* i2cPointer) {
   // initialize serial ports
   serialPorts[0] = &Serial1;
   serialPorts[1] = &Serial2;
@@ -24,10 +24,6 @@ void Bus::init(HardWire* i2cPointer, HardwareSPI* spiPointer) {
   // initialize i2c
   i2c = i2cPointer;
   i2c->begin();  
-  
-  // initialize SPI
-  spi = spiPointer;
-  spi->begin(SPI_562_500KHZ, MSBFIRST, SPI_MODE_0);
 }
 
 //
@@ -57,22 +53,6 @@ bool Bus::i2cRead(uint8 i2cAddress, uint8 regAddress, uint8 count, uint8* buffer
     returnValue = true;
 
   return returnValue;
-}
-
-//
-// spiRead
-//
-uint8 Bus::spiRead(uint8 dataAddress) {
-  spi->transfer(dataAddress | 0x80);
-  return spi->transfer(0);
-}
-
-//
-// spiWrite
-//
-void Bus::spiWrite(uint8 dataAddress, uint8 data) {
-  spi->transfer(dataAddress);
-  spi->transfer(data);
 }
 
 //
