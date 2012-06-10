@@ -17,8 +17,8 @@ void Sensors::init(GPS* gpsPointer, Mag *magPointer, Accel* accelPointer, Gyro* 
   barometer = barometerPointer;
   singleWire = singleWirePointer;
   gps->init();
-  mag->init();
   accel->init();
+  mag->init();
   gyro->init();
   barometer->init();
   singleWire->init();

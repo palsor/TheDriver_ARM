@@ -12,6 +12,7 @@ class Bus {
     Bus();
     void init(HardWire* i2cPointer);
     void i2cWrite(uint8 i2cAddress, uint8 regAddress, uint8 data);
+    void i2cWrite(uint8 i2cAddress, uint8 regAddress, uint8 data, uint8 bitmask);
     bool i2cRead(uint8 i2cAddress, uint8 regAddress, uint8 count, uint8* buffer);
     
     unsigned int serialAvailable(uint8 bus);

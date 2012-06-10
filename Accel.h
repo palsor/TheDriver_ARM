@@ -37,10 +37,36 @@
 #define REG_TIME_LATENCY_A    0x3C
 #define REG_TIME_WINDOW_A     0x3D
 
-#define DATA_RATE_100HZ       0x05 << 4
-#define DATA_RATE_200HZ       0x06 << 4
-#define DATA_RATE_400HZ       0x07 << 4
-#define DATA_RATE_1344HZ      0x09 << 4
+#define MASK_DATA_RATE        0x0F << 4
+#define VAL_DATA_RATE_100HZ   0x05 << 4
+#define VAL_DATA_RATE_200HZ   0x06 << 4
+#define VAL_DATA_RATE_400HZ   0x07 << 4
+#define VAL_DATA_RATE_1344HZ  0x09 << 4
+
+#define MASK_POWER_MODE       0x01 << 3
+#define VAL_POWER_MODE_NORMAL 0x00 << 3
+#define VAL_POWER_MODE_LOW    0x01 << 3
+
+#define MASK_AXIS_ENABLE      0x07
+#define VAL_ALL_AXIS_ENABLE   0x07
+
+#define MASK_FULL_SCALE       0x03 << 4
+#define VAL_FULL_SCALE_2G     0x00 << 4
+#define VAL_FULL_SCALE_4G     0x01 << 4
+#define VAL_FULL_SCALE_8G     0x02 << 4
+#define VAL_FULL_SCALE_16G    0x03 << 4
+
+#define MASK_HIGH_RES_MODE    0x01 << 3
+#define VAL_NORMAL_RES_MODE   0x00 << 3
+#define VAL_HIGH_RES_MODE     0x01 << 3
+
+#define MASK_NEW_DATA         0x01 << 3
+
+#define MASK_FIFO_MODE        0x03 << 6
+#define VAL_FIFO_MODE_BYPASS  0x00 << 6
+#define VAL_FIFO_MODE_FIFO    0x01 << 6
+#define VAL_FIFO_MODE_STREAM  0x02 << 6
+#define VAL_FIFO_MODE_TRIGGER 0x03 << 6
 
 class Accel {
   public:

@@ -37,6 +37,18 @@ void Bus::i2cWrite(uint8 i2cAddress, uint8 regAddress, uint8 data) {
 }
 
 //
+// i2cWrite
+//
+void Bus::i2cWrite(uint8 i2cAddress, uint8 regAddress, uint8 data, uint8 bitmask) {
+  uint8 temp;
+  i2cRead(i2cAddress, regAddress, 1, &temp);
+  bitmask ^= 0xFF; // invert the bitmask with an xor
+  temp &= bitmask; // mask off the data from the register
+  temp |= data; // write the new data
+  i2cWrite(i2cAddress, regAddress, temp);
+}
+
+//
 // i2cRead
 //
 bool Bus::i2cRead(uint8 i2cAddress, uint8 regAddress, uint8 count, uint8* buffer) {
