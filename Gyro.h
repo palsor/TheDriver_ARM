@@ -7,7 +7,7 @@
 #include "Externs.h"
 #include "Bus.h"
 
-#define GYRO_I2C_ADDR       0xD0
+#define GYRO_I2C_ADDR       0x68
 
 #define REG_WHO_AM_I        0x0F
 #define REG_CTRL_REG1       0x20

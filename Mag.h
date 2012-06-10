@@ -7,7 +7,7 @@
 #include "Externs.h"
 #include "Bus.h"
 
-#define MAG_I2C_ADDR      0x3C
+#define MAG_I2C_ADDR      0x1E
 
 #define REG_CRA_REG_M     0x00
 #define REG_CRB_REG_M     0x01

@@ -7,7 +7,7 @@
 #include "Externs.h"
 #include "Bus.h"
 
-#define ACCEL_I2C_ADDR        0x32
+#define ACCEL_I2C_ADDR        0x19
 
 #define REG_CTRL_REG1_A       0x20
 #define REG_CTRL_REG2_A       0x21
